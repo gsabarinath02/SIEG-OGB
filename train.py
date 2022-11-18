@@ -1,3 +1,7 @@
+import matplotlib.pyplot as plt
+import matplotlib
+from torch_geometric.utils import to_networkx
+import networkx as nx
 import argparse
 import time
 import os, sys
@@ -109,7 +113,8 @@ def eval_model(**kwargs):
         test_pred = kwargs["test_pred"]
         test_true = kwargs["test_true"]
         results = evaluate_auc(val_pred, val_true, test_pred, test_true)
-
+        
+    # print(results)
     return results
 
 
@@ -531,8 +536,23 @@ train_dataset = eval(dataset_class)(
     shuffle=True,
     slice_type=args.slice_type,
     preprocess_fn=preprocess_fn,
-) 
+)
 num_train_datas = len(train_dataset)
+matplotlib.use("Agg")
+loader = DataLoader(train_dataset, batch_size=1, shuffle=False)
+for g in loader:
+    f = plt.figure(figsize=(20, 20))
+    limits = plt.axis('off')
+    g = g.to(device)
+    node_size = 100
+    with_labels = True
+    G = to_networkx(g, node_attrs=['z'])
+    labels = {i: G.nodes[i]['z'] for i in range(len(G))}
+    nx.draw(G, node_size=node_size, arrows=True, with_labels=with_labels,
+                labels=labels)
+    f.savefig('tmp_vis.png')
+    pdb.set_trace()
+    
 if False:  # visualize some graphs
     import networkx as nx
     from torch_geometric.utils import to_networkx
