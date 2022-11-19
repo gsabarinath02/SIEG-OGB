@@ -538,20 +538,20 @@ train_dataset = eval(dataset_class)(
     preprocess_fn=preprocess_fn,
 )
 num_train_datas = len(train_dataset)
-matplotlib.use("Agg")
-loader = DataLoader(train_dataset, batch_size=1, shuffle=False)
-for g in loader:
-    f = plt.figure(figsize=(20, 20))
-    limits = plt.axis('off')
-    g = g.to(device)
-    node_size = 100
-    with_labels = True
-    G = to_networkx(g, node_attrs=['z'])
-    labels = {i: G.nodes[i]['z'] for i in range(len(G))}
-    nx.draw(G, node_size=node_size, arrows=True, with_labels=with_labels,
-                labels=labels)
-    f.savefig('tmp_vis.png')
-    pdb.set_trace()
+# matplotlib.use("Agg")
+# loader = DataLoader(train_dataset, batch_size=1, shuffle=False)
+# for g in loader:
+#     f = plt.figure(figsize=(20, 20))
+#     limits = plt.axis('off')
+#     g = g.to(device)
+#     node_size = 100
+#     with_labels = True
+#     G = to_networkx(g, node_attrs=['z'])
+#     labels = {i: G.nodes[i]['z'] for i in range(len(G))}
+#     nx.draw(G, node_size=node_size, arrows=True, with_labels=with_labels,
+#                 labels=labels)
+#     f.savefig('tmp_vis.png')
+#     pdb.set_trace()
     
 if False:  # visualize some graphs
     import networkx as nx
